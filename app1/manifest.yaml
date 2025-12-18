@@ -35,9 +35,9 @@ metadata:
   name: app1
 spec:
   selector:
-  purpose: ingress-demo
-  project: roboshop
-  app: app1
+    purpose: ingress-demo
+    project: roboshop
+    app: app1
   ports:
     - protocol: TCP
       port: 80 # service port
