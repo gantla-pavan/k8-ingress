@@ -54,11 +54,11 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: daws86s.cyou
+  - host: "app1.daws86s.cyou"
     http:
       paths:
-      - path: /
-        pathType: Prefix
+      - path: "/"
+        pathType: "Prefix"
         backend:
           service:
             name: app1
