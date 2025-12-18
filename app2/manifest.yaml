@@ -51,7 +51,7 @@ metadata:
     alb.ingress.kubernetes.io/tags: Environment=dev,Project=roboshop
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: roboshop
-    
+
 spec:
   ingressClassName: alb
   rules:
@@ -62,6 +62,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: app1
+            name: app2
             port:
               number: 80
