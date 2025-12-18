@@ -1,9 +1,7 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1
-  # these are replica set labels
   labels:
     purpose: ingress-demo
     project: roboshop
@@ -11,16 +9,13 @@ metadata:
 spec:
   replicas: 2
   selector:
-    # these labels are used to select pods
     matchLabels:
       purpose: ingress-demo
-    project: roboshop
-    app: app1
-  # pod definition
+      project: roboshop
+      app: app1
   template:
     metadata:
       labels:
-        # purpose: dp-demo
         purpose: ingress-demo
         project: roboshop
         app: app1
@@ -28,6 +23,8 @@ spec:
       containers:
       - name: app1
         image: gantlapavan/app1:v1
+        ports:
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -39,41 +36,29 @@ spec:
     project: roboshop
     app: app1
   ports:
-    - protocol: TCP
-      port: 80 # service port
-      targetPort: 80 # container port
+  - protocol: TCP
+    port: 80
+    targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: app1
   annotations:
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:515497299016:certificate/2773a73a-6eac-4911-83e3-b0728f78503a
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/tags: Environment=dev,Project=roboshop
-    
-
 spec:
   ingressClassName: alb
   rules:
-  - host: "daws86s.cyou"
+  - host: daws86s.cyou
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: app1
             port:
               number: 80
-  # - host: "*.foo.com"
-  #   http:
-  #     paths:
-  #     - pathType: Prefix
-  #       path: "/foo"
-  #       backend:
-  #         service:
-  #           name: service2
-  #           port:
-  #             number: 80
